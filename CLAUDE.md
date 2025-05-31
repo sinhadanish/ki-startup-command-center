@@ -138,11 +138,14 @@ git add . && git commit -m "Update description" && git push origin main
 ### Submodules Architecture
 ```
 submodules/
-├── product/ki-platform/          # Main Ki platform (monorepo)
-│   ├── apps/web/                 # Marketing website (Next.js)
-│   ├── apps/app/                 # Ki relationship app (React)
-│   ├── apps/api/                 # REST API layer (FastAPI)
-│   └── apps/langgraph-backend/   # LangGraph AI engine (Python)
+├── product/ki-platform/          # Main Ki platform (Next.js Turborepo monorepo)
+│   ├── apps/web/                 # Marketing website (Next.js 15)
+│   ├── apps/app/                 # Ki relationship app (Next.js 15)
+│   ├── apps/docs/                # Documentation site (Next.js 15)
+│   ├── apps/langgraph-backend/   # LangGraph AI engine (Python + FastAPI)
+│   ├── packages/ui/              # Shared React component library
+│   ├── packages/eslint-config/   # Shared ESLint configurations
+│   └── packages/typescript-config/ # Shared TypeScript configurations
 ├── business/                     # Complete business operations
 │   ├── data-room/               # Investor documentation for $1.5M pre-seed
 │   ├── planning/                # MVP roadmap and weekly goals
