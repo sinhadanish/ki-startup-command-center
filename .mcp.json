@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "description": "Web automation for competitive analysis, market research, and testing"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/snapsprint/Documents/Ki Master Folder/startup-command-center"],
+      "description": "Enhanced file operations for data room management and document processing"
+    },
+    "github": {
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "description": "Repository management for ki-platform, ki-business, and ki-automation repos"
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "description": "Database operations for user analytics and business metrics"
+    },
+    "gdrive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "description": "Cloud storage for investor documents and team collaboration"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "description": "Team communication automation and business notifications"
+    },
+    "calendar": {
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-calendar"],
+      "description": "Meeting scheduling for investors, team planning, and customer interviews"
+    },
+    "analytics": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-analytics"],
+      "description": "User behavior analysis and business intelligence tracking"
+    }
+  }
+}

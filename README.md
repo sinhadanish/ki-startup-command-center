@@ -188,8 +188,11 @@ class KiRelationshipState(TypedDict):
 ## 🏃‍♀️ Getting Started
 
 ```bash
-# Setup Ki platform
+# Setup Ki platform with MCP servers
 make setup
+
+# Verify MCP server configuration  
+./scripts/verify-mcp.sh
 
 # Start development
 make dev
@@ -198,6 +201,18 @@ make dev
 open http://localhost:3001  # Ki app
 open http://localhost:5678  # n8n automation
 ```
+
+## 🤖 Enhanced AI Capabilities
+
+Ki includes comprehensive MCP (Model Context Protocol) server configuration for enhanced Claude Code capabilities:
+
+- **Web Automation**: Competitive analysis, market research, automated testing
+- **Database Operations**: User analytics, metrics tracking, business intelligence  
+- **Repository Management**: Multi-repo coordination, issue tracking, releases
+- **Team Collaboration**: Automated notifications, meeting scheduling, document sharing
+- **File Management**: Advanced document processing, data room organization
+
+See [MCP Setup Documentation](./docs/mcp-setup.md) for detailed configuration and usage.
 
 ---
 
