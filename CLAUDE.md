@@ -10,6 +10,7 @@ Ki's startup command center - a comprehensive development environment for buildi
 
 ### Essential Commands (Makefile)
 ```bash
+# Development Commands
 make setup     # Complete setup (submodules + Ki platform + automation)
 make dev       # Start complete development environment
 make ki-setup  # Setup Ki platform specifically  
@@ -17,6 +18,11 @@ make stop      # Stop all services
 make n8n       # Open n8n automation dashboard (admin/ki2024)
 make backup    # Backup everything
 make clean     # Clean up everything
+
+# Git Automation Commands
+make git-status  # Check status of all submodules and main repository
+make git-push    # Push changes in all submodules + main repository
+make git-pull    # Pull latest changes from all repositories
 ```
 
 ### MCP Server Configuration
@@ -121,6 +127,20 @@ intake → safety_check → emotional_analysis → conflict_detection
 - **[ki-automation](https://github.com/sinhadanish/ki-automation)** - Business automation workflows
 
 ### Git Commands for Repository Management
+
+#### Automated Git Operations (Recommended)
+```bash
+# Check status across all repositories
+make git-status
+
+# Push all changes (submodules + main repo)
+make git-push
+
+# Pull latest from all repositories  
+make git-pull
+```
+
+#### Manual Git Commands
 ```bash
 # Clone with all submodules
 git clone --recurse-submodules https://github.com/sinhadanish/ki-startup-command-center.git
@@ -133,6 +153,14 @@ git submodule update --remote
 
 # Push changes to main repository
 git add . && git commit -m "Update description" && git push origin main
+```
+
+#### Direct Script Execution
+```bash
+# For Claude Code or direct execution
+./scripts/git-submodule-status.sh   # Check all repository status
+./scripts/git-submodule-push.sh     # Push all changes
+./scripts/git-submodule-pull.sh     # Pull all updates
 ```
 
 ### Submodules Architecture
