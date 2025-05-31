@@ -1,0 +1,113 @@
+{
+  "name": "Ki Customer Interview Tracking",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "customer-interview",
+        "responseMode": "responseNode",
+        "responseData": "{ \"message\": \"Interview request received\", \"status\": \"success\" }"
+      },
+      "id": "webhook-start",
+      "name": "Interview Request Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "baseId": "app123456789",
+        "table": "Customer Interviews",
+        "operation": "create",
+        "fieldsData": [
+          {
+            "field": "Name",
+            "value": "={{ $json.name }}"
+          },
+          {
+            "field": "Email",
+            "value": "={{ $json.email }}"
+          },
+          {
+            "field": "Relationship Stage",
+            "value": "={{ $json.relationship_stage }}"
+          },
+          {
+            "field": "Main Challenge",
+            "value": "={{ $json.main_challenge }}"
+          },
+          {
+            "field": "Interview Status",
+            "value": "Requested"
+          }
+        ]
+      },
+      "id": "airtable-create",
+      "name": "Add to Customer Database",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "to": "={{ $json.email }}",
+        "subject": "Ki Interview - Let's connect about your relationship journey",
+        "html": "Hi {{ $json.name }},<br><br>Thank you for your interest in being part of Ki's development journey!<br><br>We'd love to learn more about your relationship challenges and how Ki might help.<br><br>Please book a time that works for you: <a href=\"https://calendly.com/ki-team/customer-interview\">Schedule Interview</a><br><br>The conversation will take about 20 minutes and help us build a better platform for couples like you.<br><br>With gratitude,<br>The Ki Team"
+      },
+      "id": "email-confirmation",
+      "name": "Send Interview Confirmation",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "channel": "customer-development",
+        "text": "🎯 New customer interview request!\n\n**Name**: {{ $json.name }}\n**Relationship Stage**: {{ $json.relationship_stage }}\n**Main Challenge**: {{ $json.main_challenge }}\n\n📅 Interview link sent automatically"
+      },
+      "id": "slack-notification",
+      "name": "Notify Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Interview Request Webhook": {
+      "main": [
+        [
+          {
+            "node": "Add to Customer Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Customer Database": {
+      "main": [
+        [
+          {
+            "node": "Send Interview Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Interview Confirmation": {
+      "main": [
+        [
+          {
+            "node": "Notify Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "1"
+}

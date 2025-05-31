@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # Ki Marketing Website
+  web:
+    build: 
+      context: ./submodules/product/ki-platform/apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/ki_db
+      - NEXT_PUBLIC_APP_URL=http://localhost:3001
+    depends_on:
+      - postgres
+    volumes:
+      - ./submodules/product/ki-platform/apps/web:/app
+      - /app/node_modules
+
+  # Ki AI Relationship Platform  
+  app:
+    build:
+      context: ./submodules/product/ki-platform/apps/app
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/ki_db
+      - NEXTAUTH_URL=http://localhost:3001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    depends_on:
+      - postgres
+      - api
+    volumes:
+      - ./submodules/product/ki-platform/apps/app:/app
+      - /app/node_modules
+
+  # Ki AI Engine API
+  api:
+    build:
+      context: ./submodules/product/ki-platform/apps/api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/ki_db
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./submodules/product/ki-platform/apps/api:/app
+      - /app/node_modules
+
+  # n8n Automation (Essential for 3-person team efficiency)
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=ki2024
+      - WEBHOOK_URL=http://localhost:5678/
+      - DATABASE_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_db
+      - DB_POSTGRESDB_USER=postgres
+      - DB_POSTGRESDB_PASSWORD=password
+    depends_on:
+      - postgres
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./submodules/automation/n8n-workflows:/home/node/workflows
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Shared Database
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ki_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-multiple-dbs.sql:/docker-entrypoint-initdb.d/init-multiple-dbs.sql
+
+volumes:
+  postgres_data:
+  redis_data:
+  n8n_data:
