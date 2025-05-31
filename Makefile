@@ -1,8 +1,9 @@
-.PHONY: help setup dev stop clean backup ki-setup
+.PHONY: help setup dev stop clean backup ki-setup git-status git-push git-pull
 
 help:
 	@echo "🚀 Ki: Relationship Intelligence Platform"
 	@echo ""
+	@echo "Development Commands:"
 	@echo "setup        - Complete setup (Ki platform + n8n + automation)"
 	@echo "dev          - Start complete development environment"
 	@echo "ki-setup     - Setup Ki platform specifically"
@@ -10,6 +11,11 @@ help:
 	@echo "n8n          - Open n8n automation dashboard"
 	@echo "backup       - Backup everything"
 	@echo "clean        - Clean up everything"
+	@echo ""
+	@echo "Git Commands:"
+	@echo "git-status   - Check status of all submodules"
+	@echo "git-push     - Push changes in all submodules + main repo"
+	@echo "git-pull     - Pull latest changes from all repositories"
 
 setup:
 	@echo "📦 Setting up Ki relationship intelligence platform..."
@@ -59,3 +65,16 @@ clean:
 	@docker-compose down -v
 	@cd submodules/product/ki-platform && rm -rf node_modules .next || true
 	@docker system prune -f
+
+# Git automation commands
+git-status:
+	@echo "📊 Checking git status across all repositories..."
+	@./scripts/git-submodule-status.sh
+
+git-push:
+	@echo "⬆️ Pushing changes to all repositories..."
+	@./scripts/git-submodule-push.sh
+
+git-pull:
+	@echo "⬇️ Pulling latest changes from all repositories..."
+	@./scripts/git-submodule-pull.sh
