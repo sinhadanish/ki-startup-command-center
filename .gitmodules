@@ -1,0 +1,12 @@
+[submodule "submodules/product/ki-platform"]
+	path = submodules/product/ki-platform
+	url = https://github.com/snapsprint/ki-platform.git
+	branch = main
+[submodule "submodules/business"]
+	path = submodules/business
+	url = https://github.com/snapsprint/ki-business.git
+	branch = main
+[submodule "submodules/automation/n8n-workflows"]
+	path = submodules/automation/n8n-workflows
+	url = https://github.com/snapsprint/ki-automation.git
+	branch = main

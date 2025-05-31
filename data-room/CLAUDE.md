@@ -1,6 +1,6 @@
-# CLAUDE.md - Ki Data Room
+# CLAUDE.md
 
-This file provides guidance to Claude Code when working with Ki's comprehensive investor data room.
+This file provides guidance to Claude Code (claude.ai/code) when working with Ki's comprehensive investor data room.
 
 ## Data Room Overview
 
@@ -57,6 +57,20 @@ data-room/
 4. **Experienced Team**: Proven track record in AI/ML and scaling technology
 5. **Clear Path to Scale**: India-first → global, B2C → B2B expansion
 
+## Document Management Commands
+
+### Working with Documentation
+- **Read files**: Use Read tool for comprehensive document analysis
+- **Edit content**: Use Edit or MultiEdit for updating business metrics, financial projections, or market data
+- **Search patterns**: Use Grep tool to find specific information across documents (e.g., financial figures, key metrics)
+- **File organization**: Use LS and Glob tools to navigate the structured data room hierarchy
+
+### Common Update Tasks
+- Update financial projections in `04-financial-projections/`
+- Refresh traction metrics throughout executive summary and pitch materials
+- Maintain consistent messaging across all investor-facing documents
+- Version control document changes for investor updates
+
 ### Financial Information
 - **Valuation**: $10M post-money (pre-seed round)
 - **Use of Funds**: 40% product, 35% team, 25% growth
@@ -70,7 +84,10 @@ data-room/
 - `09-investment-information/pre-seed-investment-deck.md`: Pitch presentation
 
 ### Product Differentiation
+- `01-product-intelligence/README.md`: Complete product documentation overview
 - `01-product-intelligence/human-ai-human-framework.md`: Core technical innovation
+- `01-product-intelligence/technical-architecture.md`: System architecture and AI/ML pipelines
+- `01-product-intelligence/ki-conversational-system.md`: AI system prompts and conversation framework
 - `07-technology-architecture/`: Technical moat and competitive advantages
 
 ### Market Analysis
@@ -81,6 +98,24 @@ data-room/
 - `03-business-model/`: Revenue streams and unit economics
 - `04-financial-projections/`: Financial models and growth scenarios
 - `08-go-to-market/`: Customer acquisition strategy
+
+## Document Architecture
+
+### Structured Information Hierarchy
+The data room follows investor due diligence flow:
+1. **Executive Summary** → High-level investment thesis
+2. **Product Intelligence** → Technical differentiation and product vision
+3. **Market Opportunity** → Market size and competitive landscape
+4. **Business Model** → Revenue mechanics and unit economics
+5. **Financial Projections** → Growth models and funding requirements
+6. **Investment Information** → Pitch materials and funding terms
+
+### Cross-Document Consistency
+Key metrics and messaging should be consistent across:
+- Executive summary financial projections
+- Investment deck revenue models
+- Market analysis competitive positioning
+- Product documentation technical capabilities
 
 ## Investor Questions & Answers
 
