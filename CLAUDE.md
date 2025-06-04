@@ -68,21 +68,65 @@ MCP servers are automatically available when working in this project directory a
 - **Marketing Site**: http://localhost:3000 - Next.js website
 - **n8n Automation**: http://localhost:5678 - Business automation workflows
 
-### Testing & Quality
+### Testing & Quality (Next Forge Commands)
 ```bash
-# Backend (LangGraph)
-cd submodules/product/ki-platform/apps/langgraph-backend
+# Navigate to Ki platform (Next Forge monorepo)
+cd submodules/product/ki-platform
+
+# Core development commands
+pnpm dev           # Start all Next.js apps in development mode
+pnpm build         # Build all applications for production
+pnpm test          # Run Vitest tests across all packages
+pnpm lint          # Ultracite linting (Biome-based, faster than ESLint)
+pnpm format        # Format code with Ultracite
+pnpm typecheck     # TypeScript checking across monorepo
+pnpm analyze       # Bundle analysis for optimization
+pnpm translate     # Internationalization workflow
+pnpm boundaries    # Enforce package boundary rules
+
+# Database operations
+pnpm migrate       # Prisma format + generate + push to database
+
+# Package management
+pnpm install       # Install dependencies (preferred package manager)
+pnpm bump-deps     # Update all dependencies
+pnpm bump-ui       # Update shadcn/ui components
+pnpm clean         # Clean node_modules across workspace
+
+# Backend (LangGraph AI Engine)
+cd apps/langgraph-backend
 pytest tests/
 python -m pytest tests/ -v
+```
 
-# Frontend - Use pnpm (preferred package manager)
+### Next Forge Workflow Patterns
+```bash
+# 1. Start development environment
+make dev                    # Starts all services including Next.js apps
+
+# 2. Work on specific applications
 cd submodules/product/ki-platform
-pnpm test
-pnpm lint
-pnpm typecheck
+pnpm dev                   # Development mode for all apps
+# Apps run on:
+# - Web (marketing): http://localhost:3000
+# - App (platform): http://localhost:3001  
+# - Docs: http://localhost:3002
+# - Storybook: http://localhost:6006
 
-# Install dependencies with pnpm
-pnpm install
+# 3. Add new features following Next Forge patterns
+# - Use workspace packages (@repo/*) for shared logic
+# - Follow environment variable patterns with keys.ts
+# - Implement UI with design-system components
+# - Add comprehensive tests with Vitest
+
+# 4. Quality assurance
+pnpm lint          # Fast linting with Ultracite
+pnpm typecheck     # Ensure type safety
+pnpm test          # Run test suite
+pnpm analyze       # Check bundle sizes
+
+# 5. Database changes
+pnpm migrate       # Handle schema updates safely
 ```
 
 ## Architecture Overview
@@ -116,13 +160,48 @@ intake → safety_check → emotional_analysis → conflict_detection
 - **Pattern recognition** for relationship dynamics
 - **Personalized responses** for each partner
 
-### Technology Stack
+### Technology Stack (Next Forge Architecture)
+
+**Core Framework**: Built on [Next Forge](https://www.next-forge.com/docs) - A production-ready Next.js boilerplate with enterprise-grade tooling
+
+#### Frontend & UI Stack
+- **Framework**: Next.js 15 with App Router (React 19.1.0)
+- **UI Components**: Radix UI primitives with shadcn/ui design system
+- **Styling**: Tailwind CSS 4.1.7 with class-variance-authority
+- **Icons**: Lucide React + Radix Icons
+- **Forms**: React Hook Form with Hookform Resolvers + Zod validation
+- **Typography**: Geist font family
+- **Theme**: next-themes for dark/light mode
+- **Charts**: Recharts for data visualization
+- **Command Menu**: CMDK for search interfaces
+
+#### Backend & Infrastructure
 - **AI Engine**: LangGraph + OpenAI GPT-4 + Anthropic Claude
-- **Backend**: FastAPI (Python 3.11+)
-- **Frontend**: Next.js (marketing), React (app)
-- **Database**: PostgreSQL + Redis
-- **Automation**: n8n workflows
+- **Backend API**: FastAPI (Python 3.11+) + Next.js API routes
+- **Database**: PostgreSQL with Prisma ORM + Neon serverless
+- **Cache/Real-time**: Redis + WebSocket support
+- **Authentication**: Clerk with custom themes
+- **File Storage**: Integrated cloud storage solutions
+- **Rate Limiting**: Built-in rate limiting package
+
+#### Development & DevOps
+- **Monorepo**: Turborepo for build orchestration
+- **Package Manager**: pnpm 10.11.0
+- **TypeScript**: 5.8.3 with strict configuration
+- **Linting**: Ultracite (Biome-based) + ESLint
+- **Testing**: Vitest for unit/integration tests
+- **Environment**: @t3-oss/env-nextjs for type-safe env vars
+- **Automation**: n8n workflows for business processes
 - **Orchestration**: Docker Compose
+
+#### Production & Monitoring
+- **Deployment**: Vercel with edge functions
+- **Analytics**: PostHog + Vercel Analytics + Google Analytics
+- **Error Tracking**: Sentry with performance monitoring
+- **Logging**: Logtail for structured logging
+- **Email**: Resend with React Email templates
+- **Payments**: Stripe with agent toolkit integration
+- **Security**: Arcjet for protection and rate limiting
 
 ## Repository Structure
 
@@ -230,23 +309,67 @@ submodules/
 
 ## Development Guidelines
 
+### Next Forge Architecture Patterns
+
+#### Environment Variables (Type-Safe)
+- **Composable System**: Each package defines environment variables in `keys.ts` files
+- **Type Safety**: Uses @t3-oss/env-nextjs for runtime validation and autocompletion
+- **Structure**: Server/client separation with Zod validation schemas
+- **Files to Update**: When adding env vars, update both `.env.local` files and relevant `keys.ts`
+
+```typescript
+// Example: packages/auth/keys.ts
+export const keys = () => createEnv({
+  server: {
+    CLERK_SECRET_KEY: z.string().min(1),
+  },
+  client: {
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
+  },
+  runtimeEnv: process.env,
+});
+```
+
+#### Package Architecture
+- **Modular Design**: Each feature is a workspace package (e.g., `@repo/auth`, `@repo/database`)
+- **Shared Dependencies**: Common TypeScript configs, UI components, and utilities
+- **Clean Imports**: Use workspace aliases (`@repo/*`) for internal packages
+- **Separation of Concerns**: Auth, database, email, payments, etc. are isolated packages
+
+#### UI Component Development
+- **Design System**: Use `@repo/design-system` with Radix UI primitives
+- **Styling**: Tailwind CSS with class-variance-authority for component variants
+- **Theming**: Built-in dark/light mode support with next-themes
+- **Accessibility**: Radix UI ensures WCAG compliance out of the box
+- **Typography**: Geist font family for consistent branding
+
+#### Data Layer Best Practices
+- **ORM**: Prisma with type-safe database operations
+- **Validation**: Zod schemas for runtime type checking
+- **Migrations**: Use `pnpm migrate` for database schema updates
+- **Connection**: Neon serverless PostgreSQL with connection pooling
+
 ### Privacy-First Development
 - All relationship data is highly sensitive and encrypted
 - Maintain strict separation between partners' private data channels
 - Follow HIPAA compliance patterns for healthcare-grade security
 - Never log or expose personal relationship content
+- **Security Package**: Use `@repo/security` for consistent protection patterns
 
 ### AI/ML Best Practices
 - **Emotional Intelligence**: UI adapts to detected emotional states
 - **Pattern Recognition**: Identify dynamics without clinical labeling
 - **Voice-First**: Seamless voice-visual interaction for intimate conversations
 - **Real-time Processing**: <2 second response times for relationship support
+- **Error Handling**: Comprehensive Sentry integration for AI pipeline monitoring
 
 ### Code Quality Standards
-- **Testing**: Cover relationship scenarios and emotional intelligence
+- **Testing**: Vitest for unit/integration tests covering relationship scenarios
 - **Privacy**: Verify partner data separation in all features
-- **Performance**: Voice response times under 100ms
+- **Performance**: Voice response times under 100ms with performance monitoring
 - **Empathy**: Validate insight delivery and emotional responsiveness
+- **Linting**: Ultracite (Biome-based) for fast, consistent code formatting
+- **Type Safety**: Strict TypeScript configuration across all packages
 
 ## Business Context
 
@@ -342,4 +465,68 @@ The automation provides detailed, colorized output:
 - ⬇️ **Pull Operations**: Updates all repositories with latest changes
 - 🎉 **Success Summaries**: Confirms all operations completed successfully
 
-This command center enables rapid iteration by a small team through extensive automation, sophisticated AI capabilities, comprehensive git management, and complete business documentation for fundraising.
+## Next Forge Implementation Guidelines
+
+### Key Next Forge Principles for Development
+
+#### 1. Environment Variable Management
+Always use the composable environment system:
+```bash
+# When adding new environment variables:
+# 1. Add to relevant .env.local files
+# 2. Update corresponding keys.ts file with Zod validation
+# 3. Import and extend in app's env.ts file
+```
+
+#### 2. Package-First Development
+- Create new features as workspace packages when they're reusable
+- Use `@repo/*` imports for internal packages
+- Follow the established patterns in `packages/` directory
+- Keep apps thin, packages thick
+
+#### 3. UI Development Best Practices
+```typescript
+// Use design system components
+import { Button } from '@repo/design-system/button'
+import { Card } from '@repo/design-system/card'
+
+// Follow variant patterns with class-variance-authority
+const buttonVariants = cva('base-styles', {
+  variants: {
+    variant: { default: '...', destructive: '...' },
+    size: { default: '...', sm: '...' },
+  }
+})
+```
+
+#### 4. Data Layer Patterns
+```typescript
+// Use Prisma with type safety
+import { db } from '@repo/database'
+import { z } from 'zod'
+
+// Define schemas with Zod
+const userSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+})
+
+// Type-safe database operations
+const users = await db.user.findMany({
+  where: { active: true }
+})
+```
+
+#### 5. Testing Strategy
+- Use Vitest for fast unit and integration tests
+- Test component behavior, not implementation
+- Mock external services and APIs
+- Focus on user interactions and data flows
+
+#### 6. Performance Optimization
+- Use `pnpm analyze` to monitor bundle sizes
+- Implement proper code splitting
+- Optimize images and assets
+- Monitor Core Web Vitals with Vercel Analytics
+
+This command center enables rapid iteration by a small team through extensive automation, sophisticated AI capabilities, comprehensive git management, complete business documentation for fundraising, and enterprise-grade Next Forge architecture patterns.
